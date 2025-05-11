@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "Libre Franklin";
+  src: url("../utils/fonts/LibreFranklin.ttf"), local("Libre Franklin");
+}
+
+@font-face {
+  font-family: "Libre Franklin Medium";
+  src: url("../utils/fonts/LibreFranklin-Medium.ttf"), local("Libre Franklin Medium");
+}
+
+@font-face {
+  font-family: "Libre Franklin Bold";
+  src: url("../utils/fonts/LibreFranklin-Bold.ttf"), local("Libre Franklin Bold");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../utils/fonts/OpenSans.ttf"), local("Open Sans");
+}
+
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("../utils/fonts/Poppins-Bold.ttf"), local("Poppins Bold");
+}
+
+@font-face {
+  font-family: "Poppins Medium";
+  src: url("../utils/fonts/Poppins-Medium.ttf"), local("Poppins Medium");
+}
+
+@font-face {
+  font-family: "Poppins Regular";
+  src: url("../utils/fonts/Poppins-Regular.ttf"), local("Poppins Regular");
+}
+
+@font-face {
+  font-family: "Poppins SemiBold";
+  src: url("../utils/fonts/Poppins-SemiBold.ttf"), local("Poppins SemiBold");
+}
+
+body {
+  background-image: url('../public/Images/background.jpg');
+  background-repeat: unset;
+  background-size: cover;
+}

@@ -7,7 +7,7 @@ const seed = async () => {
         await pool.query("DELETE FROM tags");
         await pool.query("DELETE FROM columns");
 
-        const columns = ["BackLog", "To Do", "In Progess", "Done"];
+        const columns = ["Today", "This Week", "Later"];
 
         
         for (let i = 0; i < columns.length; i++) {

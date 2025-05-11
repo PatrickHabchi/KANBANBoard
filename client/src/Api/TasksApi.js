@@ -4,13 +4,38 @@ import api from './axios';
 function useTasksApi() {
   
   const getAllTasks = async () => {
-    const res = await api.get("/tasks");
-        console.log("⚙️  GET /tasks response:", res);
-    console.log("⚙️  GET /tasks res.data:", res.data);
-    return res.data;
+    try {
+      const res = await api.get("/tasks");
+      return res.data;
+    } catch (error) {
+      console.error(error);  
+    }
   };
+
+  const createTask = async (payload) => {
+    try {
+      const res = await api.post("/tasks", payload)
+
+      return res.data
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+
+  const updateTask = async (id, payload) => {
+    try {
+      const res = await api.put(`/tasks/${id}`, payload);
+      return res.data;
+    } catch (error) {
+      console.error(error);   
+    }
+  };
+
   return {
-    getAllTasks
+    getAllTasks,
+    updateTask,
+    createTask
   }
 }
 

@@ -11,10 +11,12 @@ exports.list = async (req, res, next) => {
 };
 exports.create = async (req, res, next) => {
     try {
+        console.log("POST /tasks payload:", req.body); 
         const task = await taskModel.createTask(req.body);
-        await logModel.createLog(task_id, `Created task "${task.title}"`);
+        await logModel.createLog(task.id, `Created task "${task.title}"`);
         res.status(201).json(task);
     } catch (err) {
+        console.error("DB error on createTask ➜", err);
         next(err);
     }
 }
