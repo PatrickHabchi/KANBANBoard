@@ -1,4 +1,22 @@
-.add-card {
+@use './pages/Board';
+@use './pages/AddColumn';
+
+
+.input {
+    width: 300px;
+    margin-bottom: 4px;
+    padding: 5px 25px;
+    border-radius: 3px;
+    border: 1px solid #d1d1d1;
+}    
+
+.error {
+    margin-left: 2px;
+    color: red;
+    font-family: Poppins Regular;
+    font-size: 14px;
+}
+
 .input {
     width: 100%;
     margin-bottom: 4px;
@@ -17,5 +35,4 @@
 
 .button {
     width: 50%;
-}
 }

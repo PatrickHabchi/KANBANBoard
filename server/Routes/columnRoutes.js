@@ -3,7 +3,7 @@ const router = express.Router();
 const controller = require("../Controllers/columnController");
 
 
-router.get("/", controller.list);
-router.post("/", controller.create);
+router.get("/getAllColumns", controller.list);
+router.post("/createColumn", controller.create);
 
 module.exports = router;

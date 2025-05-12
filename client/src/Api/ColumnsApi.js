@@ -3,21 +3,20 @@ import api from './axios';
 function useColumnsApi() {
 
     const getAllColumns = async () => {
-        const res = await api.get('/columns');
+        const res = await api.get('/columns/getAllColumns');
         return res.data
     }
 
-    const createColumn = async (title, position) => {
-        const res = await api.post("/columns", 
+    const createColumn = async (title) => {
+        const res = await api.post("/createColumns", 
             { 
-              title, 
-              position 
+              title
             });
         return res.data;
       };
 
     const updateColumn = async (id, { title, position }) => {
-    const res = await api.put(`/columns/${id}`, 
+    const res = await api.put(`/columns/updateColumn/${id}`, 
         { 
           title, 
           position
@@ -26,7 +25,7 @@ function useColumnsApi() {
     };
 
     const deleteColumn = async (id) => {
-        await api.delete(`/columns/${id}`);
+        await api.delete(`/columns/deleteColumn/${id}`);
     };
 
   return {

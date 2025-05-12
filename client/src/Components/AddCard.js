@@ -1,49 +1,66 @@
 import React, { useState } from "react";
 import useTasksApi from "../Api/TasksApi";
-import '../Styles/pages/AddCard.scss'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 function AddCard({ columnId, onAdd }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState({});
 
   const { createTask } = useTasksApi();
 
   const handleSubmit = async () => {
-    if (!showForm) {
-      setShowForm(true);
-      return;
-    }
-
-    if (!title.trim()) return;
-
-    const payload = {
-      title,
-      description,
-      column_id: columnId,
-      task_id: null,
-    };
-
-    try {
-      const newTask = await createTask(payload);
-      onAdd?.(newTask);
-    } catch (error) {
-      console.error("Error creating task:", error);
-    } finally {
-      setTitle("");
-      setDescription("");
-      setShowForm(false);
+    if (validationForm()) {
+      
+      if (!showForm) {
+        setShowForm(true);
+        return;
+      }
+  
+      const payload = {
+        title,
+        description,
+        column_id: columnId,
+        task_id: null,
+      };
+  
+      try {
+        const newTask = await createTask(payload);
+        onAdd?.(newTask);
+      } catch (error) {
+        console.error("Error creating task:", error);
+      } finally {
+        setTitle("");
+        setDescription("");
+        setShowForm(false);
+      }
     }
   };
 
+  const validationForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    if (!title) {
+      newErrors.title = "Card Title is required";
+      isValid = false;
+    }
+
+    setError(newErrors);
+    return isValid;
+  }
+
   return (
     showForm ? (
-    <div className="add-card">
+    <div className="add-card w-100">
       <input
         placeholder="Card title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="input mb-2"
       />
+      {error.title && (<div className='error mb-2'>{error.title}</div>)}
       <textarea
         placeholder="Description (optional)"
         value={description}
@@ -58,16 +75,19 @@ function AddCard({ columnId, onAdd }) {
         <div className="button">
         <button
           type="button"
-          onClick={() => setShowForm(false)}
-          className="btn btn-secondary w-100"
+          onClick={() => {
+            setShowForm(false); 
+            setError({})
+          }}
+          className="btn"
         >
-          Cancel
+          <FontAwesomeIcon icon={faX} />
         </button>
         </div>
       </div>
     </div>
   ) : (
-    <button onClick={() => setShowForm(true)} className="btn btn-primary w-100">
+    <button onClick={() => setShowForm(true)} className="btn w-100 text-start">
       + Add Card
     </button>
   ))

@@ -1,12 +1,25 @@
 .add-column {
-    display: flex;
-    align-items: center;
-    font-family: Poppins Medium;
-    padding: 10px;
-    border-radius: 10px;
-    height: 50px;
-    width: 300px;
-    background-color: rgba(128, 128, 128, 0.5);
-    color: white;
-    cursor: pointer;
+
+
+    .create-column {
+        background-color: #F5F5F5;;
+        padding: 15px;
+        border-radius: 10px;
+        .input {
+            width: 300px;   
+        }    
+    }
+    .add-new-column {
+        display: flex;
+        align-items: center;
+        font-family: Poppins Medium;
+        padding: 10px;
+        border-radius: 10px;
+        height: 50px;
+        width: 300px;
+        background-color: rgba(128, 128, 128, 0.5);
+        color: white;
+        cursor: pointer;
+    }
+
 }

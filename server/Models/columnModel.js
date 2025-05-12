@@ -7,12 +7,16 @@ const getAllColumns = async () => {
     return rows;
 }
 
-const createColumn = async () => {
-    const { rows } = pool.query(
-        "INSERT INTO columns (title, position) VALUES ($1, $2) RETURNING [title, position]"
-    );
-
-    return rows[0];
+const createColumn = async (title) => {
+    const { rows } = await pool.query(
+        `INSERT INTO columns (title, position)
+         VALUES ($1,
+           (SELECT COALESCE(MAX(position), 0) + 1 FROM columns)  -- auto-increment
+         )
+         RETURNING *`,
+        [title]
+      );
+      return rows[0];
 }
 
 module.exports = { getAllColumns, createColumn };

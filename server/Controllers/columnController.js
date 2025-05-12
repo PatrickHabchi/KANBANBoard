@@ -11,9 +11,9 @@ exports.list = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
     try {
-        const { title, position } = req.body;
+        const { title } = req.body;
 
-        const column = await columnModel.createColumn(title, position);
+        const column = await columnModel.createColumn(title);
         res.status(201).json(column);
     } catch (err) {
         next(err);

@@ -5,7 +5,7 @@ function useTasksApi() {
   
   const getAllTasks = async () => {
     try {
-      const res = await api.get("/tasks");
+      const res = await api.get("/tasks/getTasks");
       return res.data;
     } catch (error) {
       console.error(error);  
@@ -14,7 +14,7 @@ function useTasksApi() {
 
   const createTask = async (payload) => {
     try {
-      const res = await api.post("/tasks", payload)
+      const res = await api.post("/tasks/createTask", payload)
 
       return res.data
     } catch (error) {
@@ -25,7 +25,7 @@ function useTasksApi() {
 
   const updateTask = async (id, payload) => {
     try {
-      const res = await api.put(`/tasks/${id}`, payload);
+      const res = await api.put(`/tasks/updateTask/${id}`, payload);
       return res.data;
     } catch (error) {
       console.error(error);   
