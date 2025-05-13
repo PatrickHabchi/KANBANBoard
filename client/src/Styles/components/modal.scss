@@ -7,3 +7,52 @@
         font-family: Poppins SemiBold;
     }
 }
+
+.delete-popup {
+    .header {
+        text-align: center;
+        font-size: 25px;
+        font-family: Poppins SemiBold;
+        color: #ff0000;
+    }
+
+    .delete-container {
+        .title {
+            font-family: Poppins Medium;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            .delete-button {
+                .delete-btn {
+                    border-radius: 10px;
+                    background-color: #ff0000;
+                    font-family: Poppins Regular;
+                    padding: 8px 15px;
+                    font-size: 16px;
+                    color: white;
+                    border: 1px solid #ff0000;
+                }
+            }
+
+            .cancel-button {
+                
+                .cancel-btn {
+                    border-radius: 10px;
+                    padding: 8px 15px;
+                    border: 1px solid #7e7e7e;
+                    background: none;
+                    color: #000000;
+                    font-family: Poppins Regular;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}

@@ -6,17 +6,20 @@ import AddCard from '../Components/BoardComponents/AddCard';
 import '../Styles/pages/Board.scss';
 import AddColumn from '../Components/BoardComponents/AddColumn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faX } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash, faX } from '@fortawesome/free-solid-svg-icons';
 import useLogsApi from '../Api/LogsApi';
+import DeletePopup from '../Components/BoardComponents/DeletePopup';
 
 function Board() {
   const { getAllColumns } = useColumnsApi();
-  const { getAllTasks, updateTask } = useTasksApi();
+  const { getAllTasks, updateTask, deleteTask } = useTasksApi();
   const { getLogs } = useLogsApi();
   const [columns, setColumns] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [logs, setLogs] = useState([]);
   const [draft, setDraft] = useState({ title: '', description: '' });
+  const [openDeletePopup, setOpenDeletePopup] = useState(false);
+  const [toDelete, setToDelete] = useState(null)
 
   useEffect(() => {
     const fetchBoard = async () => {
@@ -104,9 +107,26 @@ function Board() {
     }
   };
 
-  const cancelEdit = () => { setEditingId(null); };
+  const cancelEdit = () => { 
+    setEditingId(null); 
+  };
+
+  const handleDelete = async (taskId) => {
+        try {
+          await deleteTask(taskId);
+          setColumns(cols =>
+            cols.map(c => ({
+              ...c,
+             tasks: c.tasks.filter(t => t.id !== taskId)
+            }))
+          );
+        } catch (err) {
+          console.error("Error deleting task", err);
+        }
+    };
 
   return (
+    <>
     <div className='board-page container-fluid'>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className='row gy-3'>
@@ -144,8 +164,20 @@ function Board() {
                               ) : (
                                 <>
                                   <div className='title'>{task.title}</div>
-                                  {task.description && <div className='desc'>{task.description}</div>}
-                                  <FontAwesomeIcon icon={faPen} className='edit-icon' onClick={() => startEdit(task)} />
+                                  <div className='desc'>{task.description}</div>
+                                  
+                                  <div className="card-actions">
+                                  <FontAwesomeIcon 
+                                    icon={faPen} 
+                                    className="edit-icon" 
+                                    onClick={() => startEdit(task)} 
+                                  />                  
+                                  <FontAwesomeIcon 
+                                    icon={faTrash} 
+                                    className="delete-icon" 
+                                    onClick={() => {setOpenDeletePopup(true); setToDelete(task)}} 
+                                  />
+                                </div>                       
                                 </>
                               )}
                             </div>
@@ -170,6 +202,10 @@ function Board() {
         </div>
       </DragDropContext>
     </div>
+
+    <DeletePopup isOpen={openDeletePopup} setIsOpen={setOpenDeletePopup} taskTitle={toDelete?.title} onDelete={handleDelete}/> 
+</>
+    
   );
 }
 

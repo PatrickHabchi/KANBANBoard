@@ -32,7 +32,6 @@ const createTask = async ({ title, description, column_id, tag_id }) => {
   );
   const position = posRes.rows[0].next_pos;          
 
-  // 2) insert the task
   const { rows } = await pool.query(
     `INSERT INTO tasks (title, description, column_id, tag_id, position)
      VALUES ($1, $2, $3, $4, $5)
@@ -56,4 +55,16 @@ const updateTask = async (
   return rows[0];
 };
 
-module.exports = { getAllTasks, createTask, updateTask, getTaskById};
+const deleteTask = async (id) => {
+  const { rows } = await pool.query(
+    `DELETE FROM tasks
+     WHERE id = $1
+     RETURNING *`,
+    [id]
+  );
+  
+  return rows[0];
+}
+
+
+module.exports = { getAllTasks, createTask, updateTask, getTaskById, deleteTask};

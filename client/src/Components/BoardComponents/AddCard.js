@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useTasksApi from "../../Api/TasksApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,14 @@ function AddCard({ columnId, onAdd }) {
   const [error, setError] = useState({});
 
   const { createTask } = useTasksApi();
+
+  const InputRef = useRef(null);
+
+  useEffect(() => {
+    if (showForm && InputRef.current) {
+      InputRef.current.focus();
+    }
+  }, [showForm]);
 
   const handleSubmit = async () => {
     if (validationForm()) {
@@ -55,6 +63,7 @@ function AddCard({ columnId, onAdd }) {
     showForm ? (
     <div className="add-card w-100">
       <input
+        ref={InputRef}
         placeholder="Card title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
