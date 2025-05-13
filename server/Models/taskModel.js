@@ -58,13 +58,12 @@ const updateTask = async (
 const deleteTask = async (id) => {
   const { rows } = await pool.query(
     `DELETE FROM tasks
-     WHERE id = $1
-     RETURNING *`,
+      WHERE id = $1
+      RETURNING *`,    
     [id]
   );
-  
   return rows[0];
-}
+};
 
 
 module.exports = { getAllTasks, createTask, updateTask, getTaskById, deleteTask};

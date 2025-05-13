@@ -1,14 +1,26 @@
 const pool = require("../config/db");
 
-const getAllTags = async () => {
-    const { rows } = await pool.query(`SELECT * from tags ORDER BY id`);
-    return rows;
+async function getAllTags() {
+  const { rows } = await pool.query(
+    `SELECT id, name FROM tags ORDER BY name`
+  );
+  return rows;
 }
 
-const createTags = async () => {
-    const { rows } = await pool.query(`INSERT INTO tags (name, color) VALUES ($1, $2) RETURNING *`);
+async function createTag(name) {
+  const { rows } = await pool.query(
+    `INSERT INTO tags(name) VALUES($1)
+     ON CONFLICT(name) DO NOTHING
+     RETURNING *`,
+    [name]
+  );
+  if (rows.length) return rows[0];
 
-    return rows[0];
+  const { rows: existing } = await pool.query(
+    `SELECT id, name FROM tags WHERE name = $1`,
+    [name]
+  );
+  return existing[0];
 }
 
-module.exports = { getAllTags, createTags };
+module.exports = { getAllTags, createTag };

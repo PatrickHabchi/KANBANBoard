@@ -2,8 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isloading: "idle",
-
-
+  logs: []
 };
 
 const AppSlice = createSlice({
@@ -12,7 +11,12 @@ const AppSlice = createSlice({
   reducers: {
     settingData: (state, action) => {
       const { field, value } = action.payload;
-      state[field] = value;
+
+      if (field === "logs") {
+        state.logs = [...value, ...state.logs];
+      } else {
+        state[field] = value;
+      }
     },
   },
 });

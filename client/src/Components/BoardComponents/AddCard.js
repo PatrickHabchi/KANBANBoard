@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import useTasksApi from "../../Api/TasksApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import useLogsApi from "../../Api/LogsApi";
+import { toast } from "react-toastify";
+
 function AddCard({ columnId, onAdd }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -9,6 +12,7 @@ function AddCard({ columnId, onAdd }) {
   const [error, setError] = useState({});
 
   const { createTask } = useTasksApi();
+  const { getLogs } = useLogsApi();
 
   const InputRef = useRef(null);
 
@@ -36,7 +40,11 @@ function AddCard({ columnId, onAdd }) {
       try {
         const newTask = await createTask(payload);
         onAdd?.(newTask);
+        await getLogs();
+        toast.success("Task created successfully!");
+        
       } catch (error) {
+        toast.error("Failed to create task");
         console.error("Error creating task:", error);
       } finally {
         setTitle("");

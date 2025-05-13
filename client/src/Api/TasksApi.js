@@ -32,10 +32,22 @@ function useTasksApi() {
     }
   };
 
+  const deleteTask = async (id) => {
+    try {
+      const res = await api.delete(`/tasks/deleteTask/${id}`)
+
+      return res.data.payload;
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+
   return {
     getAllTasks,
     updateTask,
-    createTask
+    createTask,
+    deleteTask
   }
 }
 

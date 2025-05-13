@@ -72,32 +72,20 @@ exports.update = async (req, res, next) => {
     }
   };
 
-  exports.delete = async (req, res, next) => {
-    try {
-      const id = req.params.id;
-
-      const deleted = await taskModel.deleteTask(id);
-
-      if (!deleted) {
-        return res.status(404).json({
-          success: false,
-          message: `Task with id ${id} not found`
-        });
-      }
-      await logModel.createLog(
-        deleted.id,
-        `Deleted task "${deleted.title}"`
-      );
-  
-      // 4) Return the deleted row
-      res.status(200).json({
-        success: true,
-        data: deleted
-      });
-  
-    } catch (err) {
-      console.error("Error in delete controller:", err);
-      next(err);
+exports.delete = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const original = await taskModel.getTaskById(id);
+    if (!original) {
+      return res.status(404).json({ success: false, message: `Task ${id} not found` });
     }
-  };
 
+    await logModel.createLog(id, `Deleted task "${original.title}"`);
+
+    const deleted = await taskModel.deleteTask(id);
+
+    res.status(200).json({ success: true, payload: deleted });
+  } catch (err) {
+    next(err);
+  }
+};

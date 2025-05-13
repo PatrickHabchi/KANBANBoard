@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import useColumnsApi from "../../Api/ColumnsApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import useLogsApi from "../../Api/LogsApi";
+import { toast } from 'react-toastify';
 
 function AddColumn({ onAdd }) {
   const [showForm, setShowForm] = useState(false);
@@ -9,6 +11,7 @@ function AddColumn({ onAdd }) {
   const [error, setError] = useState({});
 
   const { createColumn } = useColumnsApi();
+  const { getLogs } = useLogsApi()
 
   const InputRef = useRef(null);
 
@@ -28,8 +31,11 @@ function AddColumn({ onAdd }) {
       try {
         const newColumn = await createColumn(columnTitle);
         onAdd?.(newColumn);
+        await getLogs();
+        toast.success("Column created successfully!");
         reset();
       } catch (err) {
+        toast.error("Failed to create column");
         console.error("Error creating column:", err);
       }
     }

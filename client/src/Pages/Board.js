@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faX } from '@fortawesome/free-solid-svg-icons';
 import useLogsApi from '../Api/LogsApi';
 import DeletePopup from '../Components/BoardComponents/DeletePopup';
+import TagSelector from '../Components/BoardComponents/TagSelector';
+import { toast } from 'react-toastify';
+
 
 function Board() {
   const { getAllColumns } = useColumnsApi();
@@ -18,6 +21,7 @@ function Board() {
   const [editingId, setEditingId] = useState(null);
   const [logs, setLogs] = useState([]);
   const [draft, setDraft] = useState({ title: '', description: '' });
+  const [draftTag, setDraftTag] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [toDelete, setToDelete] = useState(null)
 
@@ -71,8 +75,10 @@ function Board() {
       await updateTask(draggableId, payload); 
 
       const latest = await getLogs();
+      toast.success("Task edited successfully!");
       setLogs(latest);
     } catch (err) { 
+      toast.success("Failed to edit task!");
       console.error('Error updating task position', err); 
     }
   };
@@ -89,18 +95,26 @@ function Board() {
   const startEdit = task => {
     setEditingId(task.id);
     setDraft({ title: task.title, description: task.description || '' });
+    setDraftTag(task.tag_id);  
   };
 
   const saveEdit = async task => {
     try {
-      const updated = await updateTask(task.id, { ...task, title: draft.title, description: draft.description });
+      const updated = await updateTask(task.id, 
+        { ...task, 
+          title: draft.title, 
+          description: draft.description,
+          tag_id: draftTag 
+        });
+
       setColumns(cols =>
-        cols.map(c =>
-          c.id === updated.column_id
-            ? { ...c, tasks: c.tasks.map(t => (t.id === updated.id ? updated : t)) }
-            : c
-        )
-      );
+         cols.map(c =>
+           c.id === updated.column_id
+             ? { ...c, tasks: c.tasks.map(t => (t.id === updated.id ? updated : t)) }
+             : c
+           )
+        );
+
       setEditingId(null);
     } catch (e) {
       console.error('update failed', e);
@@ -111,19 +125,7 @@ function Board() {
     setEditingId(null); 
   };
 
-  const handleDelete = async (taskId) => {
-        try {
-          await deleteTask(taskId);
-          setColumns(cols =>
-            cols.map(c => ({
-              ...c,
-             tasks: c.tasks.filter(t => t.id !== taskId)
-            }))
-          );
-        } catch (err) {
-          console.error("Error deleting task", err);
-        }
-    };
+
 
   return (
     <>
@@ -156,6 +158,11 @@ function Board() {
                                     value={draft.description}
                                     onChange={e => setDraft({ ...draft, description: e.target.value })}
                                   />
+
+                                   <TagSelector
+                              value={draftTag}
+                             onChange={setDraftTag}
+                            />
                                   <div className='mt-2'>
                                     <button className='btn btn-success me-2' onClick={() => saveEdit(task)}>Save</button>
                                     <button className='btn ' onClick={cancelEdit}><FontAwesomeIcon icon={faX} /></button>
@@ -203,7 +210,13 @@ function Board() {
       </DragDropContext>
     </div>
 
-    <DeletePopup isOpen={openDeletePopup} setIsOpen={setOpenDeletePopup} taskTitle={toDelete?.title} onDelete={handleDelete}/> 
+    <DeletePopup 
+      isOpen={openDeletePopup} 
+      setIsOpen={setOpenDeletePopup} 
+      taskTitle={toDelete?.title} 
+      taskId={toDelete?.id} 
+      setColumns={setColumns}
+    /> 
 </>
     
   );

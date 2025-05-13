@@ -11,37 +11,38 @@ exports.list = async (req, res, next) => {
 }
 
 exports.create = async (req, res, next) => {
-    try {
-        const { title } = req.body;
+  try {
+    const { title, payload = {}, updated = {} } = req.body;
 
-        const column = await columnModel.createColumn(title);
+    const column = await columnModel.createColumn(title);
 
-        await logModel.createLog(
-            null,
-            `Created column "${col.title}"`
-          );
+    await logModel.createLog(
+      null,
+      `Created column "${column.title}"`
+    );
 
-          if (payload.column_id !== undefined) {
-            const col = await columnModel.getColumnById(payload.column_id);
-            await logModel.createLog(
-              updated.id,
-              `Moved "${updated.title}" to column "${col.title}" at position ${updated.position}`
-            );
-          }
+    if (payload.column_id !== undefined) {
+      const col = await columnModel.getColumnById(payload.column_id);
+      await logModel.createLog(
+        updated.id,
+        `Moved "${updated.title}" to column "${col.title}" at position ${updated.position}`
+      );
 
-          else {
-            await logModel.createLog(
-              updated.id,
-              `Edited "${updated.title}"`
-            );
-          }
-
-        res.status(200).json({
-            success: true,
-            message: "Column created successfully",
-            payload: column
-        });
-    } catch (err) {
-        next(err);
+    } else if (updated.id !== undefined) {
+      await logModel.createLog(
+        updated.id,
+        `Edited "${updated.title}"`
+      );
     }
-}
+
+    // 5) Return response
+    res.status(200).json({
+      success: true,
+      message: "Column created successfully",
+      payload: column
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
