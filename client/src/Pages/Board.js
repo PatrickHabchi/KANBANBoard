@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react';
 import useColumnsApi from '../Api/ColumnsApi';
 import useTasksApi from '../Api/TasksApi';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import AddCard from '../Components/AddCard';
+import AddCard from '../Components/BoardComponents/AddCard';
 import '../Styles/pages/Board.scss';
-import AddColumn from '../Components/AddColumn';
+import AddColumn from '../Components/BoardComponents/AddColumn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faX } from '@fortawesome/free-solid-svg-icons';
+import useLogsApi from '../Api/LogsApi';
 
 function Board() {
   const { getAllColumns } = useColumnsApi();
   const { getAllTasks, updateTask } = useTasksApi();
+  const { getLogs } = useLogsApi();
   const [columns, setColumns] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [logs, setLogs] = useState([]);
   const [draft, setDraft] = useState({ title: '', description: '' });
 
   useEffect(() => {
@@ -42,16 +45,33 @@ function Board() {
 
   const onDragEnd = async result => {
     const { source, destination, draggableId } = result;
+
     if (!destination) return;
     if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+
     const newCols = columns.map(col => ({ ...col, tasks: Array.from(col.tasks) }));
     const sourceCol = newCols.find(col => String(col.id) === source.droppableId);
     const [movedTask] = sourceCol.tasks.splice(source.index, 1);
     const destCol = newCols.find(col => String(col.id) === destination.droppableId);
     destCol.tasks.splice(destination.index, 0, movedTask);
+    
     setColumns(newCols);
-    const payload = { ...movedTask, column_id: destCol.id, position: destination.index + 1 };
-    try { await updateTask(draggableId, payload); } catch (err) { console.error('Error updating task position', err); }
+
+    const payload = { 
+      ...movedTask, 
+      column_id: destCol.id, 
+      position: 
+      destination.index + 1 
+    };
+
+    try { 
+      await updateTask(draggableId, payload); 
+
+      const latest = await getLogs();
+      setLogs(latest);
+    } catch (err) { 
+      console.error('Error updating task position', err); 
+    }
   };
 
   const handleAddCard = newTask => {

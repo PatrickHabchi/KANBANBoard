@@ -7,6 +7,16 @@ const getAllColumns = async () => {
     return rows;
 }
 
+const getColumnById = async (id) => {
+  const { rows } = await pool.query(
+    `SELECT id, title, position
+       FROM columns
+      WHERE id = $1`,
+    [id]
+  );
+  return rows[0];
+}
+
 const createColumn = async (title) => {
     const { rows } = await pool.query(
         `INSERT INTO columns (title, position)
@@ -19,4 +29,4 @@ const createColumn = async (title) => {
       return rows[0];
 }
 
-module.exports = { getAllColumns, createColumn };
+module.exports = { getAllColumns, createColumn, getColumnById };

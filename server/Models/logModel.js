@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 const getAllLogs = async () => {
-    const { rows } = pool.query(
+    const { rows } = await pool.query(
         `SELECT * FROM logs ORDER BY timestamp DESC`
     );
 

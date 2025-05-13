@@ -1,5 +1,7 @@
 @use './pages/Board';
-@use './pages/AddColumn';
+@use './components/AddColumn.scss';
+@use './components/Layout';
+@use './components/modal';
 
 
 .input {

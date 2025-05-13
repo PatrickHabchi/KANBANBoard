@@ -12,6 +12,16 @@ const getAllTasks = async () => {
   return rows;
 };
 
+const getTaskById = async (id) => {
+  const { rows } = await pool.query(
+    `SELECT id, title, column_id, position
+       FROM tasks
+      WHERE id = $1`,
+    [id]
+  );
+  return rows[0];
+}
+
 
 const createTask = async ({ title, description, column_id, tag_id }) => {
   const posRes = await pool.query(
@@ -46,4 +56,4 @@ const updateTask = async (
   return rows[0];
 };
 
-module.exports = { getAllTasks, createTask, updateTask };
+module.exports = { getAllTasks, createTask, updateTask, getTaskById};

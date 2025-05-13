@@ -16,7 +16,7 @@ function useTasksApi() {
     try {
       const res = await api.post("/tasks/createTask", payload)
 
-      return res.data
+      return res.data.payload;
     } catch (error) {
       console.error(error);
       

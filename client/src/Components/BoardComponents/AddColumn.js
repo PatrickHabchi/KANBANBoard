@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import useColumnsApi from "../Api/ColumnsApi";
-import "../Styles/pages/AddColumn.scss";
+import useColumnsApi from "../../Api/ColumnsApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 

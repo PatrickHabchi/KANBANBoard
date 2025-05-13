@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useTasksApi from "../Api/TasksApi";
+import useTasksApi from "../../Api/TasksApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 function AddCard({ columnId, onAdd }) {
