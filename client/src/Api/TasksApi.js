@@ -6,7 +6,7 @@ function useTasksApi() {
   const getAllTasks = async () => {
     try {
       const res = await api.get("/tasks/getTasks");
-      return res.data;
+      return res.data.payload;
     } catch (error) {
       console.error(error);  
     }

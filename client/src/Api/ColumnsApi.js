@@ -4,15 +4,15 @@ function useColumnsApi() {
 
     const getAllColumns = async () => {
         const res = await api.get('/columns/getAllColumns');
-        return res.data
+        return res.data.payload;
     }
 
     const createColumn = async (title) => {
-        const res = await api.post("/createColumns", 
+        const res = await api.post("/columns/createColumn", 
             { 
               title
             });
-        return res.data;
+        return res.data.payload;
       };
 
     const updateColumn = async (id, { title, position }) => {
