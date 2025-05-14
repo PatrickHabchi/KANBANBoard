@@ -240,6 +240,7 @@ export default function Board() {
                                           <>
                                             <input
                                               className="input mb-2"
+                                              placeholder='Card Title'
                                               value={draft.title}
                                               onChange={e =>
                                                 setDraft(d => ({
@@ -250,6 +251,7 @@ export default function Board() {
                                             />
                                             <textarea
                                               className="textarea mb-2"
+                                              placeholder='Description (optional)'
                                               value={draft.description}
                                               onChange={e =>
                                                 setDraft(d => ({
