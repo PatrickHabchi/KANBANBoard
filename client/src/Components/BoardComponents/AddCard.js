@@ -11,7 +11,7 @@ function AddCard({ columnId, onAdd }) {
   const [description, setDescription] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState({});
-  const [tagId, setTagId]         = useState(null);
+  const [tagId, setTagId] = useState(null);
 
   const { createTask } = useTasksApi();
   const { getLogs } = useLogsApi();
@@ -34,31 +34,31 @@ function AddCard({ columnId, onAdd }) {
 
   const handleSubmit = async () => {
     if (validationForm()) {
-      
+
       if (!showForm) {
         setShowForm(true);
         return;
       }
-  
+
       const payload = {
         title,
         description,
         column_id: columnId,
-        tag_id:  tagId,
+        tag_id: tagId,
       };
-  
+
       try {
         const newTask = await createTask(payload);
         onAdd?.(newTask);
         await getLogs();
         toast.success("Task created successfully!");
-        
+
       } catch (error) {
         toast.error("Failed to create task");
         console.error("Error creating task:", error);
       } finally {
-          reset();
-      } 
+        reset();
+      }
     }
   };
 
@@ -77,47 +77,47 @@ function AddCard({ columnId, onAdd }) {
 
   return (
     showForm ? (
-    <div className="add-card w-100">
-      <input
-        ref={InputRef}
-        placeholder="Card title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="input mb-2"
-      />
-      {error.title && (<div className='error mb-2'>{error.title}</div>)}
-      <textarea
-        placeholder="Description (optional)"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        rows={2}
-        className="textarea"
-      />
+      <div className="add-card w-100">
+        <input
+          ref={InputRef}
+          placeholder="Card title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="input mb-2"
+        />
+        {error.title && (<div className= 'error mb-2'>{error.title}</div>)}
+        <textarea
+          placeholder="Description (optional)"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={2}
+          className="textarea"
+        />
 
-<TagSelector value={tagId} onChange={setTagId} />
-      <div className="d-flex gap-1">
-        <div className="button">
-         <button onClick={handleSubmit} className="btn btn-success w-100 ml-1">Add</button>
-        </div>
-        <div className="button">
-        <button
-          type="button"
-          onClick={() => {
-            setShowForm(false); 
-            setError({})
-          }}
-          className="btn"
-        >
-          <FontAwesomeIcon icon={faX} />
-        </button>
+        <TagSelector value={tagId} onChange={setTagId} className="w-100" />
+        <div className="d-flex gap-1">
+          <div className="button">
+            <button onClick={handleSubmit} className="btn btn-success w-100 ml-1">Add</button>
+          </div>
+          <div className="button">
+            <button
+              type="button"
+              onClick={() => {
+                setShowForm(false);
+                setError({})
+              }}
+              className="btn"
+            >
+              <FontAwesomeIcon icon={faX} />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  ) : (
-    <button onClick={() => setShowForm(true)} className="btn w-100 text-start">
-      + Add Card
-    </button>
-  ))
+    ) : (
+      <button onClick={() => setShowForm(true)} className="btn w-100 text-start">
+        + Add Card
+      </button>
+    ))
 }
 
 

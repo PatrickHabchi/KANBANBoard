@@ -1,6 +1,5 @@
 .board-page {
     padding: 15px;
-    overflow-y: none;
     scrollbar-width: thin;
     scrollbar-color: #ffffff transparent;
       
@@ -78,7 +77,6 @@
         .cancel-icon {
           color: #ff0000;
         }
-
   
         .desc {
           font-size: 16px;
@@ -113,7 +111,7 @@
     }  
 
     .column-bottom {
-      margin-bottom: 339px;
+      margin-bottom: 8%;
     }
 
   }

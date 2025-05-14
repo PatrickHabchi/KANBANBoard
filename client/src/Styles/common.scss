@@ -3,7 +3,6 @@
 @use './components/Layout';
 @use './components/modal';
 
-
 .input {
     width: 300px;
     margin-bottom: 4px;
@@ -40,3 +39,28 @@
 }
 
 
+ .tag-badge {
+          background: #f3f3f3;
+          padding: 2px 6px;
+          border-radius: 5px;
+          font-size: 14px;
+          margin-top: 4px;
+
+          .tag-select {
+            color: #666;         
+          }    
+        }
+
+         
+        .check-icon, .cancel-icon {
+          background: none;
+          border: none;
+        }
+
+        .check-icon {
+          color: #008000;
+        }
+
+        .cancel-icon {
+          color: #ff0000;
+        }

@@ -48,8 +48,7 @@ function TagSelector({ value, onChange }) {
     </div>
     ) : (
       <select
-      className="tag-select"
-      // <-- make sure this is always a string
+      className="tag-select w-100 mb-2"
       value={adding ? "new" : (value ?? "")}
       onChange={handleSelectTag}
     >
@@ -63,6 +62,7 @@ function TagSelector({ value, onChange }) {
       ))}
       <option value="new">+ Add new tag</option>
     </select>
+
     )
   );
 

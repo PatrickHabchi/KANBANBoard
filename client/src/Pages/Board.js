@@ -66,7 +66,6 @@ export default function Board() {
       return;
     }
 
-    // --- TASK DND ---
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
@@ -86,14 +85,12 @@ export default function Board() {
         position: destination.index + 1
       });
       const latest = await getLogs();
-      // you can push logs somewhere if needed
     } catch (err) {
       toast.error('Failed to move task');
       console.error(err);
     }
   };
 
-  // add new card
   const handleAddCard = newTask => {
     setColumns(cols =>
       cols.map(c =>
@@ -104,20 +101,17 @@ export default function Board() {
     );
   };
 
-  // add new column
   const handleColumnAdded = newCol => {
     if (!newCol) return;
     setColumns(prev => [...prev, { ...newCol, tasks: [] }]);
   };
 
-  // start editing a task
   const startEdit = task => {
     setEditingId(task.id);
     setDraft({ title: task.title, description: task.description || '' });
     setDraftTag(task.tag_id || null);
   };
 
-  // save edited task
   const saveEdit = async task => {
     try {
       const updated = await updateTask(task.id, {
