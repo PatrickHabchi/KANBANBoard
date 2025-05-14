@@ -199,10 +199,6 @@ ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_
 --
 
 COPY public.columns (id, title, "position") FROM stdin;
-84	BackLog	1
-85	To Do	2
-86	In Progess	3
-87	Done	4
 \.
 
 
@@ -211,15 +207,6 @@ COPY public.columns (id, title, "position") FROM stdin;
 --
 
 COPY public.logs (id, task_id, action, "timestamp") FROM stdin;
-210	\N	Created task "thrt"	2025-05-14 22:29:29.357459
-211	\N	Moved "thrt" to column "To Do"	2025-05-14 22:30:15.478375
-212	\N	Moved "thrt" to column "In Progess"	2025-05-14 22:30:16.124609
-213	\N	Moved "thrt" to column "To Do"	2025-05-14 22:30:18.276266
-214	\N	Deleted task "thrt"	2025-05-14 22:30:32.378609
-215	60	Created task "xfdf"	2025-05-14 22:41:52.410321
-216	61	Created task "jj"	2025-05-14 22:51:45.063714
-217	60	Edited task "xfdf"	2025-05-14 22:51:50.26142
-218	62	Created task "fs"	2025-05-14 22:53:31.556905
 \.
 
 
@@ -228,7 +215,6 @@ COPY public.logs (id, task_id, action, "timestamp") FROM stdin;
 --
 
 COPY public.tags (id, name) FROM stdin;
-2	sfd
 \.
 
 
@@ -237,9 +223,6 @@ COPY public.tags (id, name) FROM stdin;
 --
 
 COPY public.tasks (id, title, description, column_id, "position", created_at, deleted_at, tag_id) FROM stdin;
-62	fs		84	3	2025-05-14 22:53:31.553007	\N	\N
-61	jj		84	2	2025-05-14 22:51:45.048265	\N	2
-60	xfdf	kk	84	1	2025-05-14 22:41:52.362996	\N	2
 \.
 
 
