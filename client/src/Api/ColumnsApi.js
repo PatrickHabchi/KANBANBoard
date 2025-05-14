@@ -32,7 +32,9 @@ function useColumnsApi() {
     };
 
     const deleteColumn = async (id) => {
-        await api.delete(`/columns/deleteColumn/${id}`);
+      const res = await api.delete(`/columns/deleteColumn/${id}`);
+
+        return res.data.payload;
     };
 
   return {

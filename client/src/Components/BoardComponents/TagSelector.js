@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useTagsApi from "../../Api/TagApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 
 
 function TagSelector({ value, onChange }) {
@@ -8,9 +10,9 @@ function TagSelector({ value, onChange }) {
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState("");
 
-  // جلب الوسوم الموجودة
   useEffect(() => {
-    getAllTags().then(setTags);
+    getAllTags()
+    .then(setTags);
   }, []);
 
   const saveNew = async () => {
@@ -21,35 +23,49 @@ function TagSelector({ value, onChange }) {
     setNewName("");
   };
 
-  if (adding) {
-    return (
-      <div>
-        <input
-          placeholder="اسم الوسم"
-          value={newName}
-          onChange={e => setNewName(e.target.value)}
-        />
-        <button onClick={saveNew}>حفظ</button>
-        <button onClick={() => setAdding(false)}>إلغاء</button>
-      </div>
-    );
+  const handleSelectTag = (e) => {
+    if (e.target.value === "new") {
+      setAdding(true);
+    } else {
+      onChange(Number(e.target.value));
+    }
   }
 
   return (
-    <select
-      value={value || ""}
-      onChange={e => {
-        if (e.target.value === "__new__") setAdding(true);
-        else onChange(Number(e.target.value));
-      }}
+    adding ? (
+      <div className="d-flex gap-2">
+      <input
+        placeholder="Tag Name"
+        value={newName}
+        onChange={e => setNewName(e.target.value)}
+      />
+      <button onClick={saveNew} className="check-icon">
+        <FontAwesomeIcon icon={faCheck} />
+      </button>
+      <button onClick={() => setAdding(false)} className="cancel-icon">
+        <FontAwesomeIcon icon={faX} />
+      </button>
+    </div>
+    ) : (
+      <select
+      className="tag-select"
+      // <-- make sure this is always a string
+      value={adding ? "new" : (value ?? "")}
+      onChange={handleSelectTag}
     >
-      <option value="">— اختر وسم —</option>
+      <option value="" disabled>
+        Select Tag
+      </option>
       {tags.map(t => (
-        <option key={t.id} value={t.id}>{t.name}</option>
+        <option key={t.id} value={t.id + ""}>
+          {t.name}
+        </option>
       ))}
-      <option value="__new__">+ إضافة وسم جديد…</option>
+      <option value="new">+ Add new tag</option>
     </select>
+    )
   );
+
 }
 
 export default TagSelector;

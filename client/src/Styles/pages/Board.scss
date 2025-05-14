@@ -1,7 +1,12 @@
 .board-page {
     padding: 15px;
-  
+    overflow-y: none;
+    scrollbar-width: thin;
+    scrollbar-color: #ffffff transparent;
+      
+   
     .column {
+      position: relative;;
       display: flex;
       flex-direction: column;
       background-color: #F5F5F5;
@@ -9,12 +14,31 @@
       padding: 15px;
       min-height: 500px;
       box-shadow: 5px 5px 3px #7777771A;
+    
   
       .column-header {
+        position: relative;
         text-align: center;
         margin: 0 0 8px;
         font-size: 25px;
         font-family: 'Poppins SemiBold';
+        
+        .delete-icon {
+          position: absolute;
+          top: 10px;
+          right: 8px;
+          font-size: 16px;
+          color: #888;
+          opacity: 0;
+          transform: scale(0.95);
+          transition: opacity 0.3s, transform 0.3s;
+          cursor: pointer;
+        }
+    
+        &:hover .delete-icon {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
   
       .card {
@@ -30,9 +54,34 @@
           font-size: 16px;
           font-family: 'Poppins SemiBold';
         }
-      
-        .desc {
+
+        .tag-badge {
+          background: #f3f3f3;
+          padding: 2px 6px;
+          border-radius: 5px;
           font-size: 14px;
+          margin-top: 4px;
+
+          .tag-select {
+            color: #666;         
+          }    
+        }
+        .check-icon, .cancel-icon {
+          background: none;
+          border: none;
+        }
+
+        .check-icon {
+          color: #008000;
+        }
+
+        .cancel-icon {
+          color: #ff0000;
+        }
+
+  
+        .desc {
+          font-size: 16px;
           font-family: 'Poppins Regular';
           margin: 4px 0 0;
         }
@@ -42,7 +91,7 @@
           top: 8px;
           right: 8px;
           display: flex;
-          gap: 8px;               /* space between icons */
+          gap: 8px;              
         }
       
         .edit-icon,
@@ -60,9 +109,12 @@
           opacity: 1;
           transform: scale(1);
         }
-      }
-      
-      
+      }     
+    }  
+
+    .column-bottom {
+      margin-bottom: 339px;
     }
+
   }
   

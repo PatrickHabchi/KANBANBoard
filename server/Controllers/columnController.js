@@ -35,13 +35,36 @@ exports.create = async (req, res, next) => {
       );
     }
 
-    // 5) Return response
     res.status(200).json({
       success: true,
       message: "Column created successfully",
       payload: column
     });
 
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const original = await columnModel.getColumnById(id);
+    if (!original) {
+      return res.status(404).json({
+        success: false,
+        message: `Column with id ${id} not found`
+      });
+    }
+
+    await logModel.createLog(
+      null,
+      `Deleted column "${original.title}"`
+    );
+
+    const deleted = await columnModel.deleteColumn(id);
+
+    res.status(200).json({ success: true, payload: deleted });
   } catch (err) {
     next(err);
   }

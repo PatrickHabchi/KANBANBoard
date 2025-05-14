@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import useLogsApi from "../../Api/LogsApi";
 import { toast } from "react-toastify";
+import TagSelector from "./TagSelector";
 
 function AddCard({ columnId, onAdd }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState({});
+  const [tagId, setTagId]         = useState(null);
 
   const { createTask } = useTasksApi();
   const { getLogs } = useLogsApi();
@@ -21,6 +23,14 @@ function AddCard({ columnId, onAdd }) {
       InputRef.current.focus();
     }
   }, [showForm]);
+
+  const reset = () => {
+    setTitle('');
+    setDescription('');
+    setTagId(null);
+    setShowForm(false);
+  };
+
 
   const handleSubmit = async () => {
     if (validationForm()) {
@@ -34,7 +44,7 @@ function AddCard({ columnId, onAdd }) {
         title,
         description,
         column_id: columnId,
-        task_id: null,
+        tag_id:  tagId,
       };
   
       try {
@@ -47,10 +57,8 @@ function AddCard({ columnId, onAdd }) {
         toast.error("Failed to create task");
         console.error("Error creating task:", error);
       } finally {
-        setTitle("");
-        setDescription("");
-        setShowForm(false);
-      }
+          reset();
+      } 
     }
   };
 
@@ -85,6 +93,8 @@ function AddCard({ columnId, onAdd }) {
         rows={2}
         className="textarea"
       />
+
+<TagSelector value={tagId} onChange={setTagId} />
       <div className="d-flex gap-1">
         <div className="button">
          <button onClick={handleSubmit} className="btn btn-success w-100 ml-1">Add</button>

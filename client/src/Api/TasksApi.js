@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import api from './axios';
+import { toast } from 'react-toastify';
 
 function useTasksApi() {
+  const [editedTask, setEditedTask] = useState(null); 
+  const [alltasks, setAllTasks] = useState(null); 
+
   
   const getAllTasks = async () => {
     try {
       const res = await api.get("/tasks/getTasks");
+
+      setAllTasks(res.data.payload);
       return res.data.payload;
     } catch (error) {
       console.error(error);  
@@ -26,7 +32,8 @@ function useTasksApi() {
   const updateTask = async (id, payload) => {
     try {
       const res = await api.put(`/tasks/updateTask/${id}`, payload);
-      return res.data;
+      setEditedTask(res.data.payload);
+      return res.data.payload;
     } catch (error) {
       console.error(error);   
     }
@@ -45,7 +52,9 @@ function useTasksApi() {
 
   return {
     getAllTasks,
+    alltasks,
     updateTask,
+    editedTask,
     createTask,
     deleteTask
   }

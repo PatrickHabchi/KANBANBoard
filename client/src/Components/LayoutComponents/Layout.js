@@ -10,7 +10,7 @@ function Layout() {
   return (
     <>
       <div className="layout">
-        <div className="home">Home</div>
+        <div className="home">KANBAN Board</div>
 
         <div className='logs'>
             <button className='logs-button' onClick={() => setIsOpen(true)}>Logs</button>

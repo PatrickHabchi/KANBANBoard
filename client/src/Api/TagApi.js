@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import api from "./axios";
 
  function useTagsApi() {
@@ -13,6 +14,7 @@ import api from "./axios";
             name 
         });
         
+        toast.success("Tag created Successfully!");
     return res.data.payload;
   };
 

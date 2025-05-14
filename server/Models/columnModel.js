@@ -29,4 +29,14 @@ const createColumn = async (title) => {
       return rows[0];
 }
 
-module.exports = { getAllColumns, createColumn, getColumnById };
+const deleteColumn = async (id) => {
+  const { rows } = await pool.query(
+    `DELETE FROM columns
+      WHERE id = $1
+      RETURNING *`,
+    [id]
+  );
+  return rows[0];
+};
+
+module.exports = { getAllColumns, createColumn, getColumnById, deleteColumn };

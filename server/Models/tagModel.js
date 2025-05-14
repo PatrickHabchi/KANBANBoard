@@ -1,13 +1,13 @@
 const pool = require("../config/db");
 
-async function getAllTags() {
+const getAllTags = async  () => {
   const { rows } = await pool.query(
     `SELECT id, name FROM tags ORDER BY name`
   );
   return rows;
 }
 
-async function createTag(name) {
+const createTag = async (name) => {
   const { rows } = await pool.query(
     `INSERT INTO tags(name) VALUES($1)
      ON CONFLICT(name) DO NOTHING
