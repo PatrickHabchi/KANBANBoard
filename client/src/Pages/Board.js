@@ -1,4 +1,3 @@
-// client/src/Pages/Board.js
 import React, { useEffect, useState } from 'react';
 import useColumnsApi from '../Api/ColumnsApi';
 import useTasksApi   from '../Api/TasksApi';
@@ -51,12 +50,10 @@ export default function Board() {
     fetchBoard();
   }, []);
 
-  // handle both column- and task-dnd
   const onDragEnd = async result => {
     const { source, destination, draggableId, type } = result;
     if (!destination) return;
 
-    // --- COLUMN DND ---
     if (type === 'COLUMN') {
       if (source.index === destination.index) return;
       const reordered = Array.from(columns);

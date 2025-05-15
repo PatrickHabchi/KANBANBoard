@@ -58,10 +58,8 @@ exports.update = async (req, res, next) => {
       await logModel.createLog(id, action);
     }
 
-    // 4) re-fetch the fully joined row
     const full = await taskModel.getTaskByIdWithTag(id);
 
-    // 5) return it
     res.status(200).json({ success: true, payload: full });
 
   } catch (err) {
